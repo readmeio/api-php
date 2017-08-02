@@ -14,5 +14,11 @@ class BuildAPI {
     {
         $api_key = $api_key;
         $password = $password;
+        echo $password;
+    }
+
+    function run($service, $method, $data){
+
     }
 }
+
