@@ -17,8 +17,40 @@ class BuildAPI {
         echo $password;
     }
 
-    function run($service, $method, $data){
+    function run($param_service, $method, $data){
+        $parts = $this->generate_api_url_parts($param_service);
+        $organization = $parts[0];
+        $service = $parts[1];
+        $version_override  = $parts[2];
+        $service_full = $organization.'/'.$service;
+        $path = self::API_PATH.$service_full.$method.'/invoke';
 
+        $url = $path;
+        $options = array(
+            'http' => array(
+                'header' => "content-type: application/x-www-form-urlencoded\r\n".
+                    "User-Agent:MyAgent/1.0\r\n".
+                    'Authorization: Basic ' . base64_encode("abdul_f9cfcade4264cba870585a:''"),
+                'method'  => "POST",
+                'content' => http_build_query($data)
+            )
+        );
+
+
+        $context  = stream_context_create($options);
+        $result = file_get_contents($url, false, $context);
+        if ($result === FALSE) {
+
+        }
+
+        var_dump($result);
+
+        echo $path;
+    }
+
+    private function generate_api_url_parts($service) {
+        preg_match("/(?:([-\w]+)\/)?([-\w]+)(?:@([-.\w]+))?/", 'twitter/math/1.7', $matches);
+        return ($matches);
     }
 }
 
