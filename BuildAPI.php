@@ -14,16 +14,18 @@ class BuildAPI {
     {
         $api_key = $api_key;
         $password = $password;
-        echo $password;
+        return 'user@example.com';
     }
 
     function run($param_service, $method, $data){
         $parts = $this->generate_api_url_parts($param_service);
-        $organization = $parts[0];
-        $service = $parts[1];
-        $version_override  = $parts[2];
+//        print_r($parts);
+//        die();
+        $organization = $parts[1];
+        $service = $parts[2];
+        $version_override  = $parts[3];
         $service_full = $organization.'/'.$service;
-        $path = self::API_PATH.$service_full.$method.'/invoke';
+        $path = self::API_PATH.$service_full.'/invoke';
 
         $url = $path;
         $options = array(
@@ -39,7 +41,7 @@ class BuildAPI {
 
         $context  = stream_context_create($options);
         //$result = file_get_contents('https://api.readme.build/v0/services//math/multiply/invoke', false, $context);
-        $result = file_get_contents('https://api.readme.build/v0/services//temp-deprecated/sayHello/invoke', false, $context);
+        $result = file_get_contents($url, false, $context);
         if ($result === FALSE) {
 
         }
@@ -50,7 +52,7 @@ class BuildAPI {
     }
 
     private function generate_api_url_parts($service) {
-        preg_match("/(?:([-\w]+)\/)?([-\w]+)(?:@([-.\w]+))?/", 'twitter/math/1.7', $matches);
+        preg_match("/(?:([-\w]+)\/)?([-\w]+)(?:@([-.\w]+))?/", 'math/multiply/invoke', $matches);
         return ($matches);
     }
 }
