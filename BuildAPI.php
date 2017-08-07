@@ -10,29 +10,28 @@ class BuildAPI {
     const API_PATH = 'https://api.readme.build/v0/services/';
     const HTTP_OPEN_TIMEOUT = 5;
 
+    public  $api_key;
+    public  $password;
+
     function config($api_key, $password = '')
     {
-        $api_key = $api_key;
-        $password = $password;
-        return 'user@example.com';
+        $this->api_key = $api_key;
+        $this->password = $password;
     }
 
     function run($param_service, $method, $data){
         $parts = $this->generate_api_url_parts($param_service);
-//        print_r($parts);
-//        die();
-        $organization = $parts[1];
-        $service = $parts[2];
-        $version_override  = $parts[3];
+        $organization = $parts[0];
+        $service = $parts[1];
+        //$version_override  = $parts[2];
         $service_full = $organization.'/'.$service;
-        $path = self::API_PATH.$service_full.'/invoke';
-
+        $path = self::API_PATH.$service_full.'/'.$method.'/invoke';
         $url = $path;
         $options = array(
             'http' => array(
                 'header' => "content-type: application/x-www-form-urlencoded\r\n".
                     "User-Agent:MyAgent/1.0\r\n".
-                    'Authorization: Basic ' . base64_encode("abdul_f9cfcade4264cba870585a:''"),
+                    'Authorization: Basic ' . base64_encode($this->api_key.':'.$this->password),
                 'method'  => "POST",
                 'content' => http_build_query($data)
             )
@@ -42,18 +41,24 @@ class BuildAPI {
         $context  = stream_context_create($options);
         //$result = file_get_contents('https://api.readme.build/v0/services//math/multiply/invoke', false, $context);
         $result = file_get_contents($url, false, $context);
-        if ($result === FALSE) {
-
+        switch ($http_response_header[0]){
+            case 'HTTP/1.0 200 OK':
+                return $result;
+            default:
+                return $http_response_header[0];
         }
-
-        var_dump($result);
-
-        echo $path;
     }
 
     private function generate_api_url_parts($service) {
-        preg_match("/(?:([-\w]+)\/)?([-\w]+)(?:@([-.\w]+))?/", 'math/multiply/invoke', $matches);
+        $matches = preg_split("/[\/@]+/", $service);
+        if(count($matches) < 3) {
+            array_unshift($matches, "");
+        }
         return ($matches);
+    }
+    public function get_http_response_code($domain) {
+        $headers = get_headers($domain);
+        return substr($headers[0], 9, 3);
     }
 }
 
