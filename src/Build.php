@@ -1,4 +1,6 @@
 <?php
+
+namespace ReadmeAPI;
 /**
  * Created by PhpStorm.
  * User: User

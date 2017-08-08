@@ -1,0 +1,22 @@
+{
+  "name": "bazlur36/api-php",
+  "version": "0.0.1",
+  "description": "Nacho, nacho man. I want to be a nacho man",
+  "license": "MIT",
+  "keywords": ["nacho"],
+  "authors": [
+    {
+      "name": "Philip Brown",
+      "email": "name@domain.com"
+    }
+  ],
+  "require": {},
+  "require-dev": {
+    "phpunit/phpunit": "4.0.*"
+  },
+  "autoload": {
+    "psr-4": {
+      "PhilipBrown\\Nacho\\": "src"
+    }
+  }
+}
