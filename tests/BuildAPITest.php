@@ -34,11 +34,4 @@ final class BuildAPITest extends TestCase
         $rp = $build->run('temp-deprecated','sayHello',array('name' => "Greg"));
         $this->assertRegexp('/Greg/', $rp);
     }
-
-   /* public function testFailure() {
-        $build = new \BuildAPI();
-        $build->config('abdul_f9cfcade4264cba870585a','');
-        $rp = $build->run('temp-deprecated222','sayHello',array('name' => "Greg"));
-        $this->assertNotContains('HTTP/1.0 200 OK', $rp);
-    }*/
 }
