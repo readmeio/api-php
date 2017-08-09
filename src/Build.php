@@ -8,7 +8,7 @@ namespace ReadmeAPI;
  * Time: 8:03 PM
  */
 
-class BuildAPI {
+class Build {
     const API_PATH = 'https://api.readme.build/v0/services/';
     const HTTP_OPEN_TIMEOUT = 5;
 

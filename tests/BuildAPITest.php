@@ -7,29 +7,29 @@
  */
 
 namespace tests;
-require_once('BuildAPI.php');
 use PHPUnit\Framework\TestCase;
-
+use ReadmeAPI\Build;
+require 'vendor/autoload.php';
 
 final class BuildAPITest extends TestCase
 {
     public function testConfig()
     {
-        $build = new \BuildAPI();
+        $build = new Build();
         $build->config('abdul_f9cfcade4264cba870585a','');
         $this->assertEquals('abdul_f9cfcade4264cba870585a',$build->api_key);
     }
 
     public function testMultiplication()
     {
-        $build = new \BuildAPI();
+        $build = new Build();
         $build->config('abdul_f9cfcade4264cba870585a','');
         $rp = $build->run('math','multiply',array('numbers' => array(1,2,3)));
         $this->assertEquals(6, $rp);
     }
 
     public function testTempDeprecated() {
-        $build = new \BuildAPI();
+        $build = new Build();
         $build->config('abdul_f9cfcade4264cba870585a','');
         $rp = $build->run('temp-deprecated','sayHello',array('name' => "Greg"));
         $this->assertRegexp('/Greg/', $rp);
